@@ -1,8 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import styles from "../styles/pages/etascreen.module.scss";
 import boxImg from "../assets/boxtop.svg";
 
+
 const EtaScreen = () => {
+  const navigate = useNavigate()
   return (
     <>
       <Header />
@@ -19,10 +22,10 @@ const EtaScreen = () => {
           <p className={styles.orderinfo__id}>#4LKADSÖLDFKASÖL</p>
         </section>
         <section className={styles.btn__con}>
-          <button className={styles.neworder__btn}>
+          <button className={styles.neworder__btn} onClick={() => navigate('/')}>
             GÖR EN NY BESTÄLLNING
           </button>
-          <button className={styles.receipt__btn}>
+          <button className={styles.receipt__btn} onClick={() => navigate('/receipt')}>
             SE KVITTO
           </button>
         </section>

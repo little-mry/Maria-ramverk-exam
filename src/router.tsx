@@ -9,7 +9,7 @@ export const router = createBrowserRouter(
         <Route path="/" element={<App/>}>
             <Route index element={<Menu/>} />
             <Route path="/receipt" element={<Receipt />} />
-            <Route path="/etascreen" element={<EtaScreen/>} />
+            <Route path="/eta" element={<EtaScreen/>} />
 
 
         </Route>

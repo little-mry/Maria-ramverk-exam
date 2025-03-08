@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import cartIcon from "../assets/cart-icon.svg";
 import CartItem from "./CartItem";
 import styles from "../styles/components/cart.module.scss";
 
 const Cart = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const navigate = useNavigate()
 
   return (
     <>
@@ -30,7 +32,7 @@ const Cart = () => {
                 <p className={styles.total__title}>TOTALT</p>
                 <p className={styles.total__price}>101 SEK</p>
               </article>
-              <button className={styles.btn__purchase}>TAKE MY MONEY!</button>
+              <button className={styles.btn__purchase} onClick={() => navigate('/eta')}>TAKE MY MONEY!</button>
             </div>
             
           </section>

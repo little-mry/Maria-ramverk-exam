@@ -10,6 +10,8 @@
     align-items: center;
     margin: 0 auto;
     background-color: $bg-color-primary;
+    overflow-y: auto;
+    position: relative;
 }
 
 * {

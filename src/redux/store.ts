@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
+import orderReducer from './slices/orderSlice'
 
- const store = configureStore({
+const store = configureStore({
     reducer: {
-
+        order: orderReducer
     }
 })
 

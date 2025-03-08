@@ -1,8 +1,12 @@
 import { Outlet } from "react-router-dom"
+import ActiveOrder from "./components/ActiveOrder"
 
 function App() {
   return (
-      <Outlet />
+    <>
+      <ActiveOrder />
+      <Outlet />  
+    </>
   )
 }
 
