@@ -1,0 +1,16 @@
+@use './variables' as *;
+
+@mixin button($bg-color: $bg-color-black, $text-color: $color-white) {
+    background-color: $bg-color;
+    color: $text-color;
+    padding: 1.5rem 1rem;
+    width: 100%;
+    border-radius: $border-radius-primary;
+    font-size: $font-size-xxl;
+    font-weight: $font-weight-bold;
+    transition: background-color .3s ease;
+
+    &:active {
+        background-color: darken($bg-color, 20%);
+    }
+}
