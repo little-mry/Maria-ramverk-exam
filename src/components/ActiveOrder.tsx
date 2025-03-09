@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { RootState } from "../redux/store";
 import logo from "../assets/boxtop.svg";
 import "../styles/partials/_variables.scss";
@@ -20,13 +20,16 @@ const ActiveOrder = () => {
     typeof setTimeout
   > | null>(null);
 
-  const handleTouch = (event: React.MouseEvent | React.TouchEvent) => {
+  const handleTouch = (event: React.MouseEvent) => {
     event.preventDefault();
+
     const timeout = setTimeout(() => {
-      setIsMoving(false);
-    }, 200);
+      setIsMoving(true);
+    }, 100);
+    
 
     setClickTimeOut(timeout);
+
   };
 
   const handleMouseMove = (event: MouseEvent) => {
@@ -45,9 +48,10 @@ const ActiveOrder = () => {
       clearTimeout(clickTimeOut);
     }
 
-    if (!isMoving) {
+     if (!isMoving) {
       handleClick();
     }
+
     setIsMoving(false);
   };
 
@@ -57,8 +61,8 @@ const ActiveOrder = () => {
 
   React.useEffect(() => {
     if (isMoving) {
-      window.addEventListener("mousemove", handleMouseMove);
-      window.addEventListener("mouseup", handleStopMoving);
+      window.addEventListener("mousemove", handleMouseMove, { passive: false });
+      window.addEventListener("mouseup", handleStopMoving, { passive: false });
     } else {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleStopMoving);
@@ -88,9 +92,11 @@ const ActiveOrder = () => {
   return (
     <figure
       onMouseDown={handleTouch}
-      onTouchStart={handleTouch}
+      /*  onClick={(e) => {
+        handleClick();
+        e.preventDefault();
+      }} */
       style={style}
-      onClick={(e) => e.preventDefault()}
     ></figure>
   );
 };
