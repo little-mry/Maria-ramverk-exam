@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom"
 import ActiveOrder from "./components/ActiveOrder"
 
-function App() {
+const App = () => {
   return (
     <>
       <ActiveOrder />
