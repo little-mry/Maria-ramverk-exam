@@ -40,5 +40,6 @@ export const fetchMenu = async (apiKey: string): Promise<MenuItem[]> => {
   });
 
   if (!response.ok) throw new Error("Kunde inte hämta meny");
-  return response.json();
+  const data = await response.json()
+  return data.items;
 };

@@ -1,14 +1,19 @@
 import styles from "../styles/pages/menu.module.scss";
+import { IMenuItem } from "../utils/interface";
 
-const MenuItem = () => {
+interface Props {
+  item: IMenuItem
+}
+
+const MenuItem = ({ item }: Props) => {
   return (
     <>
       <article className={styles.fooditem}>
-        <h2 className={styles.title}>KARLSTAD</h2>
+        <h2 className={styles.title}>{item.name}</h2>
         <div className={styles.line__dotted}></div>
-        <h2 className={styles.price}>9 SEK</h2>
+        <h2 className={styles.price}>{item.price} SEK</h2>
         <p className={styles.desc}>
-          kantarell, scharlottenlök, morot, bladpersilja
+          {item.description}
         </p>
       </article>
 

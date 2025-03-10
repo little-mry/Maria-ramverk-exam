@@ -39,7 +39,7 @@
     flex-direction: column;
     margin-top: 6rem;
     position: relative;
-    padding: 1rem 1rem 1rem 0;
+    padding: 1rem 0;
     gap: 2rem;
     border-top: 1px dotted rgba(53, 49, 49, 0.24);
     border-bottom: 1px dotted rgba(53, 49, 49, 0.24);
@@ -94,12 +94,12 @@
     margin: 0 auto;
   }
   &__price {
-    grid-column: 3/4;
+    grid-column: 4/5;
     grid-row: 1/2;
   }
   
   &__amount__con {
-    grid-column: 4/5;
+    grid-column: 3/4;
     grid-row: 1/2;
     
     display: flex;

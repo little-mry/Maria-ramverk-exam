@@ -8,7 +8,7 @@ const initialState: ApiKeyState = {
   error: null,
 };
 
-const fetchApiKey = createAsyncThunk/* <string, void, { rejectValue: string }> */(
+export const fetchApiKey = createAsyncThunk/* <string, void, { rejectValue: string }> */(
   "auth/fetchApiKey",
   async (_, { rejectWithValue }) => {
     try {

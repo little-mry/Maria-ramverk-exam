@@ -4,7 +4,7 @@
   background: $bg-color-secondary url('../../assets/bg-leaf.svg') ;
   object-fit: cover;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   color: $color-white;
 
   &__con {
@@ -14,7 +14,9 @@
     background-color: $bg-color-primary;
     border-radius: $border-radius-primary;
     width: 90%;
+    height: 80%;
     box-shadow:  0px 3px 34px 0px rgba(0, 0, 0, 0.6);
+    overflow-y: scroll;
   }
 
   &__heading {
@@ -25,7 +27,7 @@
 }
 
 .fooditem,
-.sauceitems {
+.extraitems {
   display: grid;
   padding: 1rem 1rem;
   grid-template-rows: auto auto;
@@ -58,22 +60,23 @@
   }
 }
 
-.sauceitem__con {
+.extraitem__con {
   grid-row: 2/3;
   grid-column: 1/4;
   margin-top: 1rem;
-  display: grid;
-  grid-template-columns: repeat(3, auto);
-  grid-auto-rows: auto;
-  gap: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  gap: .75rem;
 
   font-size: $font-size-sm;
   font-weight: $font-weight-normal;
 
-  .sauceitem {
+  .extraitem {
     background-color: $bg-color-light-grey;
-    padding: 0.5rem 0.75rem;
+    padding: 0.5rem 0.5rem;
     border-radius: $border-radius-primary;
     text-align: center;
+    width: fit-content;
   }
 }
