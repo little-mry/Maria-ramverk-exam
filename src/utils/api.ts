@@ -1,19 +1,25 @@
-const baseUrl = 'https://fdnzawlcf6.execute-api.eu-north-1.amazonaws.com'
+import { ApiKeyResponse, TenantResponse } from "./interface";
 
+const baseUrl = "https://fdnzawlcf6.execute-api.eu-north-1.amazonaws.com";
+let tenantId: string;
+const tenant: string = "lil mry";
 
-export const fetchKey = async () => {
-    const response = await fetch(`${baseUrl}/keys`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    });
+export const fetchKey = async (): Promise<ApiKeyResponse> => {
+  const response = await fetch(`${baseUrl}/keys`, { method: "POST" });
+  if (!response.ok) throw new Error("Kunde inte hämta nyckeln");
+  return response.json()
+};
 
-    if (!response.ok) throw new Error('Kunde inte hämta nyckeln')
+export const createTenant = async (apiKey: string, tenant: string): Promise<TenantResponse>=> {
+  const response = await fetch(`${baseUrl}/tenants`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-zocom": `${apiKey}`,
+    },
+    body: JSON.stringify({ 'name': `${tenant}`}),
+  });
 
-    const data: { key: string } = await response.json()
-    return data.key
-
-}
-
-
+  if (!response.ok) throw new Error("Kunde inte skapa tenant")
+  return response.json();
+};

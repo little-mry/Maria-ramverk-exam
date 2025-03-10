@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import orderReducer from './slices/orderSlice'
-import apiKeyReducer from './slices/apiKeySlice'
+import authReducer from './slices/authSlice'
+import tenantReducer from './slices/tenantSlice'
 
 const store = configureStore({
     reducer: {
-        apiKey: apiKeyReducer,
-        order: orderReducer
+        apiKey: authReducer,
+        order: orderReducer,
+        tenant: tenantReducer
     }
 })
 

@@ -2,7 +2,6 @@ import styles from "../styles/pages/menu.module.scss";
 
 const SauceItem = () => {
   return (
-    <>
       <article className={styles.sauceitems}>
         <h2 className={styles.title}>DIPSÅS</h2>
         <div className={styles.line__dotted}></div>
@@ -14,7 +13,7 @@ const SauceItem = () => {
           </article>
         </div>
       </article>
-    </>
+   
   );
 };
 
