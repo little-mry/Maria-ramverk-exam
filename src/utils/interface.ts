@@ -4,18 +4,37 @@ interface Status {
 }
 
 export interface ApiKeyResponse {
-    key: string;
+    key: string | null;
 }
 
 export interface ApiKeyState extends Status, ApiKeyResponse{}
 
 export interface TenantResponse {
-    name: string;
-    id: string;
+    name: string | null;
+    id: string | null;
 }
 
 export interface TenantState extends Status, TenantResponse{}
 
+export interface IMenuItem {
+    id: string;
+    type: string;
+    name: string;
+    description: string;
+    price: number;
+    ingredients: string[];
+  }
 
+  export interface MenuState extends Status {
+    menu: IMenuItem[]
+   /*  order: OrderResponse[] | null */
+  }
+
+  export interface OrderResponse {
+    orderValue: number;
+    eta: number;
+    timestamp: string;
+    state: string;
+  }
 
   

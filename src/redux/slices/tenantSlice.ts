@@ -1,23 +1,22 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createTenant } from "../../utils/api";
 import { RootState } from "../store";
-import { TenantState } from "../../utils/interface";
+import { TenantResponse, TenantState } from "../../utils/interface";
 
-/* const initialState: TenantState = {
-  name: "",
-  id: "",
+const initialState: TenantState = {
+  id: null,
+  name: null,
   status: "idle",
-  error: null,
-}; */
+  error: null
+};
 
-const createNewTenant = createAsyncThunk(
+const createNewTenant = createAsyncThunk<TenantResponse, string, {state: RootState}>(
   "tenant/createTenant",
-  async (tenantName: string, { getState, rejectWithValue }) => {
+  async (tenantName, { getState, rejectWithValue }) => {
     try {
-      const apiKey = (getState() as RootState).auth.key;
+      const apiKey = getState().apiKey.key;
       if (!apiKey) throw new Error("API-nyckel saknas");
-
-      return await createTenant(apiKey, tenantName);
+      return await createTenant(apiKey, tenantName); //här ska lil mry in
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
@@ -30,17 +29,17 @@ const tenantSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getTenant.pending, (state) => {
+      .addCase(createNewTenant.pending, (state) => {
         state.status = "loading";
-        state.error = null;
       })
-      .addCase(getTenant.fulfilled, (state, action: PayloadAction<string>) => {
+      .addCase(createNewTenant.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.id = action.payload;
+        state.id = action.payload.id;
+        state.name = action.payload.name;
       })
-      .addCase(getTenant.rejected, (state, action) => {
-        state.status = "succeeded";
-        state.error = action.payload || "Något gick fel";
+      .addCase(createNewTenant.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload as string ?? "Något gick fel";
       });
   },
 });

@@ -1,25 +1,44 @@
-import { ApiKeyResponse, TenantResponse } from "./interface";
+import { ApiKeyResponse, TenantResponse, MenuItem } from "./interface";
 
 const baseUrl = "https://fdnzawlcf6.execute-api.eu-north-1.amazonaws.com";
-let tenantId: string;
-const tenant: string = "lil mry";
+/* let tenantId: string;
+const tenant: string = "lil mry"; */
 
+///////FETCH KEY///////////
 export const fetchKey = async (): Promise<ApiKeyResponse> => {
   const response = await fetch(`${baseUrl}/keys`, { method: "POST" });
   if (!response.ok) throw new Error("Kunde inte hämta nyckeln");
-  return response.json()
+  return response.json();
 };
 
-export const createTenant = async (apiKey: string, tenant: string): Promise<TenantResponse>=> {
+///////CREATE TENANT///////////
+export const createTenant = async (
+  apiKey: string,
+  tenant: string
+): Promise<TenantResponse> => {
   const response = await fetch(`${baseUrl}/tenants`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "x-zocom": `${apiKey}`,
     },
-    body: JSON.stringify({ 'name': `${tenant}`}),
+    body: JSON.stringify({ name: `${tenant}` }),
   });
 
-  if (!response.ok) throw new Error("Kunde inte skapa tenant")
+  if (!response.ok) throw new Error("Kunde inte skapa tenant");
+  return response.json();
+};
+
+///////FETCH MENU///////////
+export const fetchMenu = async (apiKey: string): Promise<MenuItem[]> => {
+  const response = await fetch(`${baseUrl}/menu`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "x-zocom": `${apiKey}`,
+    },
+  });
+
+  if (!response.ok) throw new Error("Kunde inte hämta meny");
   return response.json();
 };

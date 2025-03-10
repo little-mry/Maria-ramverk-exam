@@ -26,10 +26,15 @@ const ActiveOrder = () => {
     const timeout = setTimeout(() => {
       setIsMoving(true);
     }, 100);
-    
+
+    const clickInit = setTimeout(() => {
+      if (!isMoving) {
+        handleClick();
+      }
+    }, 150);
 
     setClickTimeOut(timeout);
-
+    setClickTimeOut(clickInit)
   };
 
   const handleMouseMove = (event: MouseEvent) => {
@@ -48,10 +53,9 @@ const ActiveOrder = () => {
       clearTimeout(clickTimeOut);
     }
 
-     if (!isMoving) {
+    /* if (!isMoving) {
       handleClick();
-    }
-
+    } */
     setIsMoving(false);
   };
 
