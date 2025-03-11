@@ -3,13 +3,15 @@ import orderReducer from './slices/orderSlice'
 import authReducer from './slices/authSlice'
 import tenantReducer from './slices/tenantSlice'
 import menuSliceReducer from "./slices/menuSlice";
+import cartReducer from "./slices/cartSlice";
 
 const store = configureStore({
     reducer: {
         apiKey: authReducer,
         menu: menuSliceReducer,
+        cart: cartReducer,
+        tenant: tenantReducer,
         order: orderReducer,
-        tenant: tenantReducer
     }
 })
 

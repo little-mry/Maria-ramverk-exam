@@ -30,6 +30,19 @@ export interface IMenuItem {
    /*  order: OrderResponse[] | null */
   }
 
+export interface ICartItem {
+  id: number;
+  name: string;
+  price: number
+  quantity: number
+}
+
+export interface CartState {
+  items: ICartItem[];
+}
+
+
+
   export interface OrderResponse {
     orderValue: number;
     eta: number;

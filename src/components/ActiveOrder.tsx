@@ -30,6 +30,7 @@ const ActiveOrder = () => {
     const clickInit = setTimeout(() => {
       if (!isMoving) {
         handleClick();
+        setIsMoving(false)
       }
     }, 150);
 
@@ -52,10 +53,6 @@ const ActiveOrder = () => {
     if (clickTimeOut) {
       clearTimeout(clickTimeOut);
     }
-
-    /* if (!isMoving) {
-      handleClick();
-    } */
     setIsMoving(false);
   };
 
@@ -96,10 +93,6 @@ const ActiveOrder = () => {
   return (
     <figure
       onMouseDown={handleTouch}
-      /*  onClick={(e) => {
-        handleClick();
-        e.preventDefault();
-      }} */
       style={style}
     ></figure>
   );

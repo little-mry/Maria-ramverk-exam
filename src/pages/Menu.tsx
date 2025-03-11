@@ -3,20 +3,25 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { fetchApiKey } from "../redux/slices/authSlice";
 import { fetchMenuThunk } from "../redux/slices/menuSlice";
+import { addToCart } from "../redux/slices/cartSlice";
 import { RootState, AppDispatch } from "../redux/store";
 
 import Header from "../components/Header";
 import MenuItem from "../components/MenuItem";
 import DipItems from "../components/DipItems";
-import styles from "../styles/pages/menu.module.scss";
 import DrinkItems from "../components/DrinkItems";
+import styles from "../styles/pages/menu.module.scss";
+import { IMenuItem } from "../utils/interface";
 
 const Menu = () => {
   const dispatch = useDispatch<AppDispatch>();
-
   const apiKey = useSelector((state: RootState) => state.apiKey.key);
   const menu = useSelector((state: RootState) => state.menu.menu) || [];
   const menuStatus = useSelector((state: RootState) => state.menu.status);
+
+  const wontonItems = menu.filter((item) => item.type === "wonton");
+  const dipItems = menu.filter((item) => item.type === "dip");
+  const drinkItems = menu.filter((item) => item.type === "drink");
 
   useEffect(() => {
     dispatch(fetchApiKey());
@@ -28,9 +33,9 @@ const Menu = () => {
     }
   }, [apiKey, dispatch]);
 
-  const wontonItems = menu.filter((item) => item.type === "wonton");
-  const dipItems = menu.filter((item) => item.type === "dip");
-  const drinkItems = menu.filter((item) => item.type === "drink");
+  const handleAddToCart = (item: IMenuItem) => {
+    dispatch(addToCart({...item, quantity: 1}));
+  };
 
   return (
     <>
@@ -40,10 +45,10 @@ const Menu = () => {
           <h1 className={styles.menu__heading}>MENY</h1>
 
           {menuStatus === "succeeded" &&
-            wontonItems.map((item) => <MenuItem key={item.id} item={item} />)}
+            wontonItems.map((item) => <MenuItem key={item.id} item={item} addToCart={handleAddToCart}/>)}
 
-          <DipItems dips={dipItems} />
-          <DrinkItems drinks={drinkItems} />
+          <DipItems dips={dipItems} addToCart={handleAddToCart}/>
+          <DrinkItems drinks={drinkItems} addToCart={handleAddToCart}/>
         </main>
       </section>
     </>
