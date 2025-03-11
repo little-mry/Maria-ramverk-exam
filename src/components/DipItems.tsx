@@ -1,7 +1,13 @@
 import styles from "../styles/pages/menu.module.scss";
 import { IMenuItem } from "../utils/interface";
 
-const DipItems = ({ dips }: { dips: IMenuItem[] }) => {
+interface DipItemProps {
+  dips: IMenuItem[];
+  addToCart: (item: IMenuItem) => void;
+}
+
+
+const DipItems = ({ dips, addToCart }: DipItemProps) => {
   const dipPrice = dips.length > 0 ? dips[0].price : 0;
   
   return (
@@ -12,7 +18,7 @@ const DipItems = ({ dips }: { dips: IMenuItem[] }) => {
 
       <div className={styles.extraitem__con}>
       {dips.map((item) => (
-          <article className={styles.extraitem}>
+          <article className={styles.extraitem} onClick={() => addToCart(item)}>
             <p className={styles.extraitem__name}>{item.name}</p>
           </article>
       ))}

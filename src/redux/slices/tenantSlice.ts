@@ -4,19 +4,32 @@ import { RootState } from "../store";
 import { TenantResponse, TenantState } from "../../utils/interface";
 
 const initialState: TenantState = {
-  id: null,
-  name: null,
+  id: localStorage.getItem("tenantId") || null,
+  name: localStorage.getItem("tenantName") || null,
   status: "idle",
   error: null
 };
 
-const createNewTenant = createAsyncThunk<TenantResponse, string, {state: RootState}>(
+export const createNewTenant = createAsyncThunk<TenantResponse, string, {state: RootState}>(
   "tenant/createTenant",
   async (tenantName, { getState, rejectWithValue }) => {
     try {
       const apiKey = getState().apiKey.key;
       if (!apiKey) throw new Error("API-nyckel saknas");
-      return await createTenant(apiKey, tenantName); //här ska lil mry in
+
+      const storedTenantId = localStorage.getItem("tenantId");
+      const storedTenantName = localStorage.getItem("tenantName");
+
+      if (storedTenantId && storedTenantName) {
+        return { id: storedTenantId, name: storedTenantName };
+      }
+
+      const newTenant = await createTenant(apiKey, tenantName);
+
+      localStorage.setItem("tenantId", newTenant.id);
+      localStorage.setItem("tenantName", newTenant.name);
+
+      return await createTenant(apiKey, tenantName); 
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }

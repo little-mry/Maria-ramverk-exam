@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchApiKey } from "../redux/slices/authSlice";
 import { fetchMenuThunk } from "../redux/slices/menuSlice";
 import { addToCart } from "../redux/slices/cartSlice";
+import { createNewTenant } from "../redux/slices/tenantSlice";
 import { RootState, AppDispatch } from "../redux/store";
 
 import Header from "../components/Header";
@@ -13,9 +14,11 @@ import DrinkItems from "../components/DrinkItems";
 import styles from "../styles/pages/menu.module.scss";
 import { IMenuItem } from "../utils/interface";
 
+
 const Menu = () => {
   const dispatch = useDispatch<AppDispatch>();
   const apiKey = useSelector((state: RootState) => state.apiKey.key);
+  const tenantId = useSelector((state: RootState) => state.tenant.id)
   const menu = useSelector((state: RootState) => state.menu.menu) || [];
   const menuStatus = useSelector((state: RootState) => state.menu.status);
 
@@ -31,7 +34,14 @@ const Menu = () => {
     if (apiKey) {
       dispatch(fetchMenuThunk(apiKey));
     }
-  }, [apiKey, dispatch]);
+
+    if (!tenantId) {
+      dispatch(createNewTenant("lil mry"))
+     
+    }
+  }, [apiKey, tenantId, dispatch]);
+
+
 
   const handleAddToCart = (item: IMenuItem) => {
     dispatch(addToCart({...item, quantity: 1}));

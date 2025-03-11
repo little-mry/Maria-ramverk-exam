@@ -1,7 +1,12 @@
 import styles from "../styles/pages/menu.module.scss";
 import { IMenuItem } from "../utils/interface";
 
-const DrinkItems = ({ drinks }: { drinks: IMenuItem[] }) => {
+interface DrinkItemProps {
+  drinks: IMenuItem[];
+  addToCart: (item: IMenuItem) => void;
+}
+
+const DrinkItems = ({ drinks, addToCart }: DrinkItemProps) => {
   const drinkPrice = drinks.length > 0 ? drinks[0].price : 0;
 
   return (
@@ -12,7 +17,7 @@ const DrinkItems = ({ drinks }: { drinks: IMenuItem[] }) => {
 
       <div className={styles.extraitem__con}>
       {drinks.map((item) => (
-          <article className={styles.extraitem}>
+          <article className={styles.extraitem} onClick={() => addToCart(item)}>
             <p className={styles.extraitem__name}>{item.name}</p>
           </article>
       ))}
