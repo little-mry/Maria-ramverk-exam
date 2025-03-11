@@ -21,15 +21,15 @@ export const createNewTenant = createAsyncThunk<TenantResponse, string, {state: 
       const storedTenantName = localStorage.getItem("tenantName");
 
       if (storedTenantId && storedTenantName) {
-        return { id: storedTenantId, name: storedTenantName };
+        return { id: storedTenantId, name: storedTenantName } as TenantResponse;
       }
 
       const newTenant = await createTenant(apiKey, tenantName);
 
-      localStorage.setItem("tenantId", newTenant.id);
-      localStorage.setItem("tenantName", newTenant.name);
+      localStorage.setItem("tenantId", newTenant.id as string);
+      localStorage.setItem("tenantName", newTenant.name as string);
 
-      return await createTenant(apiKey, tenantName); 
+      return newTenant; 
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }

@@ -36,7 +36,7 @@ const Menu = () => {
     }
 
     if (!tenantId) {
-      dispatch(createNewTenant("lil mry"))
+      dispatch(createNewTenant("LILLAMRY"))
      
     }
   }, [apiKey, tenantId, dispatch]);

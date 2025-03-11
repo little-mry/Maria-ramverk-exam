@@ -1,0 +1,78 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  margin-top: 6rem;
+  width: 100%;
+  height: 100%;
+  color: rgba(244, 243, 241, 0.94);
+}
+
+.orderinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  gap: 1rem;
+}
+.orderinfo__img {
+  width: 25rem;
+  height: 21rem;
+}
+.orderinfo__img img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: top;
+     object-position: top;
+}
+.orderinfo__title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+}
+.orderinfo__eta {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+.orderinfo__id {
+  font-size: 0.9375rem;
+  font-weight: 300;
+}
+
+.btn__con {
+  display: flex;
+  flex-direction: column;
+  gap: 0.675rem;
+  width: 100%;
+}
+.btn__con .neworder__btn {
+  background-color: rgb(53, 49, 49);
+  color: rgba(244, 243, 241, 0.94);
+  padding: 1.5rem 1rem;
+  width: 100%;
+  border-radius: 0.25rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+.btn__con .neworder__btn:active {
+  background-color: adjust(rgb(53, 49, 49), lightness 20%);
+}
+.btn__con .receipt__btn {
+  background-color: rgb(96, 88, 88);
+  color: rgba(244, 243, 241, 0.94);
+  padding: 1.5rem 1rem;
+  width: 100%;
+  border-radius: 0.25rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  border: 2px solid rgba(244, 243, 241, 0.94);
+}
+.btn__con .receipt__btn:active {
+  background-color: adjust(rgb(96, 88, 88), lightness 20%);
+}/*# sourceMappingURL=etascreen.module.css.map */
