@@ -5,7 +5,8 @@ import { RootState } from "../redux/store";
 
 import cartIcon from "../assets/cart-icon.svg";
 import CartItem from "./CartItem";
-import styles from "../styles/components/cart.module.scss";
+import { submitOrderThunk } from "../redux/slices/orderSlice";
+import styles from '../styles/components/cart.module.scss'
 
 const Cart = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -14,7 +15,10 @@ const Cart = () => {
   const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0)
 
   
-
+  const handleSubmit = () => {
+    submitOrderThunk()
+    navigate("/eta")
+  }
 
   return (
     <>
@@ -51,7 +55,8 @@ const Cart = () => {
               </article>
               <button
                 className={styles.btn__purchase}
-                onClick={() => navigate("/eta")}
+                onClick = {handleSubmit}
+      
               >
                 TAKE MY MONEY!
               </button>
