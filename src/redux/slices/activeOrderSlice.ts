@@ -9,7 +9,7 @@ const initialState: OrderState = {
 }
 
 const orderSlice = createSlice({
-    name: 'order',
+    name: 'activeOrder',
     initialState,
     reducers: {
         startOrder: (state) => { state.activeOrder = true},

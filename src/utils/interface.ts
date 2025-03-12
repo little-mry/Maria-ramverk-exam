@@ -17,7 +17,7 @@ export interface TenantResponse {
 export interface TenantState extends Status, TenantResponse {}
 
 export interface IMenuItem {
-  id: number;
+  id: string;
   type: string;
   name: string;
   description: string;
@@ -31,7 +31,7 @@ export interface MenuState extends Status {
 }
 
 export interface ICartItem {
-  id: number;
+  id: string;
   name: string;
   price: number;
   quantity: number;

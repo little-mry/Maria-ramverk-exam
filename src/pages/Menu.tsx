@@ -11,19 +11,28 @@ import DipItems from "../components/DipItems";
 import DrinkItems from "../components/DrinkItems";
 import styles from "../styles/pages/menu.module.scss";
 import { IMenuItem } from "../utils/interface";
+import { createNewTenant } from "../redux/slices/tenantSlice";
 
 
 const Menu = () => {
   const dispatch = useDispatch<AppDispatch>();
   const menu = useSelector((state: RootState) => state.menu.menu) || [];
   const menuStatus = useSelector((state: RootState) => state.menu.status);
-
+  const tenant = useSelector((state: RootState) => state.tenant);
+  
   const wontonItems = menu.filter((item) => item.type === "wonton");
   const dipItems = menu.filter((item) => item.type === "dip");
   const drinkItems = menu.filter((item) => item.type === "drink");
 
   useEffect(() => {
+    if (!tenant.id) {
+      dispatch(createNewTenant("LILLAMRY"))
+    }
+  }, [tenant.id, dispatch])
+  
+  useEffect(() => {
       dispatch(fetchMenuThunk());
+
   }, [dispatch]);
 
 

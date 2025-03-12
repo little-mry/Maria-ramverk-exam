@@ -40,20 +40,6 @@ export const fetchMenu = async (): Promise<IMenuItem[]> => {
   apiKey = await fetchKey();
   if (!apiKey) throw new Error("API-nyckel saknas");
 
-  const storedTenantId = localStorage.getItem("tenantId");
-  if (storedTenantId) {
-    tenantId = storedTenantId;
-    console.log(tenantId);
-    
-  } else {
-  
-    const tenantResponse = await createTenant(apiKey, "LILLAMRY");
-    tenantId = tenantResponse.id;
-
-    localStorage.setItem("tenantId", tenantId as string);
-    localStorage.setItem("tenantName", tenantResponse.name || "LILLAMRY");
-  }
-
   const response = await fetch(`${baseUrl}/menu`, {
     method: "GET",
     headers: {
@@ -74,13 +60,14 @@ export const submitOrder = async (tenantId: string): Promise<any> => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-zocom": apiKey || ''
+      "x-zocom": apiKey || '',
+      "tenant": tenantId
     },
+    body: JSON.stringify({ 'items': [] }),
   });
 
   if (!response.ok) throw new Error("Kunde inte skicka order");
   const data = await response.json()
- 
   return data
 
 }

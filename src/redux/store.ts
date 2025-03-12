@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import orderReducer from './slices/activeOrderSlice'
+import activeOrderReducer from './slices/activeOrderSlice'
 import authReducer from './slices/authSlice'
 import tenantReducer from './slices/tenantSlice'
 import menuSliceReducer from "./slices/menuSlice";
 import cartReducer from "./slices/cartSlice";
+import orderReducer from './slices/orderSlice'
 
 const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
         cart: cartReducer,
         tenant: tenantReducer,
         order: orderReducer,
+        activeOrder: activeOrderReducer,
     }
 })
 

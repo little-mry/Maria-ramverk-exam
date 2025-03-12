@@ -16,25 +16,28 @@ export const createNewTenant = createAsyncThunk<TenantResponse, string, {state: 
     try {
       const apiKey = getState().apiKey.key;
       if (!apiKey) throw new Error("API-nyckel saknas");
+        
+       const storedTenantId = localStorage.getItem("tenantId");
+       const storedTenantName = localStorage.getItem("tenantName");
 
-      const storedTenantId = localStorage.getItem("tenantId");
-      const storedTenantName = localStorage.getItem("tenantName");
 
-      if (storedTenantId && storedTenantName) {
-        return { id: storedTenantId, name: storedTenantName } as TenantResponse;
-      }
+       if (storedTenantId && storedTenantName) {
+        return { id: storedTenantId, name: storedTenantName}         
+       } 
 
-      const newTenant = await createTenant(apiKey, tenantName);
+         const tenantResponse = await createTenant(apiKey, tenantName);
+              
+         localStorage.setItem("tenantId", tenantResponse.id as string);
+         localStorage.setItem("tenantName", tenantResponse.name || tenantName);
+  
 
-      localStorage.setItem("tenantId", newTenant.id as string);
-      localStorage.setItem("tenantName", newTenant.name as string);
-
-      return newTenant; 
+      return tenantResponse; 
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
+
   }
-);
+  );
 
 const tenantSlice = createSlice({
   name: "tenant",

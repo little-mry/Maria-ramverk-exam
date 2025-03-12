@@ -13,7 +13,7 @@ export const fetchApiKey = createAsyncThunk/* <string, void, { rejectValue: stri
   async (_, { rejectWithValue }) => {
     try {
       const data = await fetchKey();
-      return data.key;
+      return data;
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
