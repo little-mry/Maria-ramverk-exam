@@ -2,9 +2,15 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import styles from "../styles/pages/etascreen.module.scss";
 import boxImg from "../assets/boxtop.svg";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 
 const EtaScreen = () => {
+const orderInfo = useSelector((state: RootState) => state.order)
+console.log(orderInfo);
+
+
   const navigate = useNavigate()
   return (
     <>

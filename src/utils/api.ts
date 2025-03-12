@@ -1,8 +1,10 @@
-import { ApiKeyResponse, TenantResponse, IMenuItem} from "./interface";
+import {TenantResponse, IMenuItem} from "./interface";
 
 const baseUrl = "https://fdnzawlcf6.execute-api.eu-north-1.amazonaws.com";
 let apiKey: string | null;
 let tenantId: string | null;
+
+
 
 //FETCH KEY
 export const fetchKey = async (): Promise<string> => {
@@ -31,7 +33,8 @@ export const createTenant = async (
  
   if (!response.ok) throw new Error("Kunde inte skapa tenant");
   const data = await response.json();  
-  
+  tenantId = data.id
+
   return  data;
 };
 
@@ -55,19 +58,22 @@ export const fetchMenu = async (): Promise<IMenuItem[]> => {
 
 
 //SUBMIT ORDER
-export const submitOrder = async (tenantId: string): Promise<any> => {
+export const submitOrder = async (orderItems: number[]): Promise<any> => {
   const response = await fetch(`${baseUrl}/${tenantId}/orders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-zocom": apiKey || '',
-      "tenant": tenantId
+      "x-zocom": apiKey || ''
     },
-    body: JSON.stringify({ 'items': [] }),
+    body: JSON.stringify({ 'items': orderItems }),
   });
 
   if (!response.ok) throw new Error("Kunde inte skicka order");
+
+  
   const data = await response.json()
+  console.log('ordersvar:', data);
+  
   return data
 
 }

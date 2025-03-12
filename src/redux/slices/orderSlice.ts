@@ -12,10 +12,11 @@ const initialState: OrderState = {
 
 export const submitOrderThunk = createAsyncThunk<
   OrderResponse[],
+  number[],
   { state: RootState }
->("order/submitOrder", async (_, { rejectWithValue }) => {
+>("order/submitOrder", async (orderItems, { rejectWithValue }) => {
   try {
-    return await submitOrder();
+    return await submitOrder(orderItems);
   } catch (error) {
     return rejectWithValue((error as Error).message);
   }
@@ -41,4 +42,4 @@ const orderSlice = createSlice({
   },
 });
 
-export default orderSlice.reducer
+export default orderSlice.reducer;

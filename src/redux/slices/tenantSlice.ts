@@ -7,37 +7,35 @@ const initialState: TenantState = {
   id: localStorage.getItem("tenantId") || null,
   name: localStorage.getItem("tenantName") || null,
   status: "idle",
-  error: null
+  error: null,
 };
 
-export const createNewTenant = createAsyncThunk<TenantResponse, string, {state: RootState}>(
-  "tenant/createTenant",
-  async (tenantName, { getState, rejectWithValue }) => {
-    try {
-      const apiKey = getState().apiKey.key;
-      if (!apiKey) throw new Error("API-nyckel saknas");
-        
-       const storedTenantId = localStorage.getItem("tenantId");
-       const storedTenantName = localStorage.getItem("tenantName");
+export const createNewTenant = createAsyncThunk<
+  TenantResponse,
+  string,
+  { state: RootState }
+>("tenant/createTenant", async (tenantName, { getState, rejectWithValue }) => {
+  try {
+    const apiKey = getState().apiKey.key;
+    if (!apiKey) throw new Error("API-nyckel saknas");
 
+    const storedTenantId = localStorage.getItem("tenantId");
+    const storedTenantName = localStorage.getItem("tenantName");
 
-       if (storedTenantId && storedTenantName) {
-        return { id: storedTenantId, name: storedTenantName}         
-       } 
-
-         const tenantResponse = await createTenant(apiKey, tenantName);
-              
-         localStorage.setItem("tenantId", tenantResponse.id as string);
-         localStorage.setItem("tenantName", tenantResponse.name || tenantName);
-  
-
-      return tenantResponse; 
-    } catch (error) {
-      return rejectWithValue((error as Error).message);
+    if (storedTenantId && storedTenantName) {
+      return { id: storedTenantId, name: storedTenantName };
     }
 
+    const tenantResponse = await createTenant(apiKey, tenantName);
+
+    localStorage.setItem("tenantId", tenantResponse.id as string);
+    localStorage.setItem("tenantName", tenantResponse.name || tenantName);
+
+    return tenantResponse;
+  } catch (error) {
+    return rejectWithValue((error as Error).message);
   }
-  );
+});
 
 const tenantSlice = createSlice({
   name: "tenant",
@@ -55,7 +53,7 @@ const tenantSlice = createSlice({
       })
       .addCase(createNewTenant.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload as string ?? "Något gick fel";
+        state.error = (action.payload as string) ?? "Något gick fel";
       });
   },
 });

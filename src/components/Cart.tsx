@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
 
 import cartIcon from "../assets/cart-icon.svg";
 import CartItem from "./CartItem";
@@ -11,12 +11,21 @@ import styles from '../styles/components/cart.module.scss'
 const Cart = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0)
 
   
-  const handleSubmit = () => {
-    submitOrderThunk()
+  const itemIds = cartItems.reduce<number[]>((acc, item) => {
+    for (let i = 0; i < item.quantity; i++) {
+      acc.push(item.id);
+    }
+    return acc;
+  }, []);
+  
+  
+  const handleSubmit = () => {   
+    dispatch(submitOrderThunk(itemIds))
     navigate("/eta")
   }
 
