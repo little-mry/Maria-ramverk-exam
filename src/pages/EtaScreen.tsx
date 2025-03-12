@@ -7,8 +7,8 @@ import { RootState } from "../redux/store";
 
 
 const EtaScreen = () => {
-const orderInfo = useSelector((state: RootState) => state.order)
-console.log(orderInfo);
+const orderInfo = useSelector((state: RootState) => state.order.order)
+console.log('ORDERINFO: ', orderInfo, orderInfo);
 
 
   const navigate = useNavigate()
@@ -24,7 +24,7 @@ console.log(orderInfo);
           />
         </figure>
           <p className={styles.orderinfo__title}>DINA WONTON TILLAGAS</p>
-          <p className={styles.orderinfo__eta}>ETA 5 MIN</p>
+          <p className={styles.orderinfo__eta}>ETA </p>
           <p className={styles.orderinfo__id}>#4LKADSÖLDFKASÖL</p>
         </section>
         <section className={styles.btn__con}>

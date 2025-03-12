@@ -1,4 +1,4 @@
-import {TenantResponse, IMenuItem} from "./interface";
+import { TenantResponse, IMenuItem } from "./interface";
 
 const baseUrl = "https://fdnzawlcf6.execute-api.eu-north-1.amazonaws.com";
 let apiKey: string | null;
@@ -8,8 +8,8 @@ let tenantId: string | null;
 export const fetchKey = async (): Promise<string> => {
   const response = await fetch(`${baseUrl}/keys`, { method: "POST" });
   if (!response.ok) throw new Error("Kunde inte hämta nyckeln");
-  const data = await response.json()
-  
+  const data = await response.json();
+
   return data.key;
 };
 
@@ -19,8 +19,8 @@ export const createTenant = async (
   tenant: string
 ): Promise<TenantResponse> => {
   console.log(tenant);
-  
-    const response = await fetch(`${baseUrl}/tenants`, {
+
+  const response = await fetch(`${baseUrl}/tenants`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -28,12 +28,12 @@ export const createTenant = async (
     },
     body: JSON.stringify({ name: `${tenant}` }),
   });
- 
-  if (!response.ok) throw new Error("Kunde inte skapa tenant");
-  const data = await response.json();  
-  tenantId = data.id
 
-  return  data;
+  if (!response.ok) throw new Error("Kunde inte skapa tenant");
+  const data = await response.json();
+  tenantId = data.id;
+
+  return data;
 };
 
 //FETCH MENU
@@ -48,12 +48,11 @@ export const fetchMenu = async (): Promise<IMenuItem[]> => {
       "x-zocom": `${apiKey}`,
     },
   });
-  
+
   if (!response.ok) throw new Error("Kunde inte hämta meny");
-  const data = await response.json()
+  const data = await response.json();
   return data.items;
 };
-
 
 //SUBMIT ORDER
 export const submitOrder = async (orderItems: number[]): Promise<any> => {
@@ -61,17 +60,39 @@ export const submitOrder = async (orderItems: number[]): Promise<any> => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-zocom": apiKey || ''
+      "x-zocom": apiKey || "",
     },
-    body: JSON.stringify({ 'items': orderItems }),
+    body: JSON.stringify({ items: orderItems }),
   });
 
   if (!response.ok) throw new Error("Kunde inte skicka order");
 
-  
-  const data = await response.json()
-  console.log('ordersvar:', data);
-  
-  return data
+  const data = await response.json();
+  console.log("ordersvar:", data);
 
-}
+  return data;
+};
+
+//FETCH ORDERINFO
+export const fetchOrderInfo = async () => {
+  const response = await fetch(`${baseUrl}/${tenantId}/orders/${orderId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "x-zocom": apiKey || "",
+    },
+  });
+
+  if (!response.ok) throw new Error("Kunde inte hämta orderinfo");
+
+  const data = await response.json();
+
+  return {
+    id: data.order.id, 
+    status: data.order.status,
+    items: data.order.items,
+    timestamp: data.order.timestamp,
+    eta: data.order.eta,
+  }
+
+};

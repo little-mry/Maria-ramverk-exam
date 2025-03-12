@@ -1,8 +1,8 @@
 import { OrderResponse, OrderState } from "../../utils/interface";
-import { submitOrder } from "../../utils/api";
+import { fetchOrderInfo, submitOrder } from "../../utils/api";
 import { RootState } from "../store";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchMenuThunk } from "./menuSlice";
+
 
 const initialState: OrderState = {
   order: [],
@@ -22,6 +22,18 @@ export const submitOrderThunk = createAsyncThunk<
   }
 });
 
+export const fetchOrderInfoThunk = createAsyncThunk<
+OrderResponse, 
+void, 
+{ state: RootState }
+>('order/fetchOrderInfo', async (_, {rejectWithValue }) => {
+  try {
+    return await fetchOrderInfo();
+  } catch (error) {
+    return rejectWithValue((error as Error).message)
+  }
+});
+
 const orderSlice = createSlice({
   name: "order",
   initialState,
@@ -35,7 +47,7 @@ const orderSlice = createSlice({
         state.status = "succeeded";
         state.order = action.payload;
       })
-      .addCase(fetchMenuThunk.rejected, (state, action) => {
+      .addCase(submitOrderThunk.rejected, (state, action) => {
         state.status = "failed";
         state.error = (action.payload as string) ?? "Något gick fel";
       });

@@ -43,7 +43,7 @@ export interface CartState {
 
 export interface OrderResponse {
   orderValue: number;
-  eta: number;
+  eta: string;
   timestamp: string;
   state: string;
 }

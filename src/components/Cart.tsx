@@ -12,10 +12,12 @@ const Cart = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0)
 
   
+  /* const itemIds = cartItems.map( item => item.id) */
   const itemIds = cartItems.reduce<number[]>((acc, item) => {
     for (let i = 0; i < item.quantity; i++) {
       acc.push(item.id);
@@ -35,7 +37,7 @@ const Cart = () => {
         className={styles.icon__con}
         onClick={() => setIsCartOpen(!isCartOpen)}
       >
-        {cartItems.length && <span className={styles.cart__quantity}>{totalItems}</span>}
+        {cartItems.length > 0 && <span className={styles.cart__quantity}>{totalItems}</span>}
         <img src={cartIcon} alt="Cart icon" className={styles.icon} />
       </section>
 
