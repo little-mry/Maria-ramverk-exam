@@ -4,8 +4,6 @@ const baseUrl = "https://fdnzawlcf6.execute-api.eu-north-1.amazonaws.com";
 let apiKey: string | null;
 let tenantId: string | null;
 
-
-
 //FETCH KEY
 export const fetchKey = async (): Promise<string> => {
   const response = await fetch(`${baseUrl}/keys`, { method: "POST" });
