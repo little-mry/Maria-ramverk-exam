@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { RootState } from "../redux/store";
 import logo from "../assets/boxtop.svg";
 import "../styles/partials/_variables.scss";

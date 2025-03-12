@@ -18,7 +18,7 @@ const DipItems = ({ dips, addToCart }: DipItemProps) => {
 
       <div className={styles.extraitem__con}>
       {dips.map((item) => (
-          <article className={styles.extraitem} onClick={() => addToCart(item)}>
+          <article key={item.id} className={styles.extraitem} onClick={() => addToCart(item)}>
             <p className={styles.extraitem__name}>{item.name}</p>
           </article>
       ))}

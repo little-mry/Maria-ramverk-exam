@@ -1,11 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "../redux/store";
 
-import { fetchApiKey } from "../redux/slices/authSlice";
 import { fetchMenuThunk } from "../redux/slices/menuSlice";
 import { addToCart } from "../redux/slices/cartSlice";
-import { createNewTenant } from "../redux/slices/tenantSlice";
-import { RootState, AppDispatch } from "../redux/store";
 
 import Header from "../components/Header";
 import MenuItem from "../components/MenuItem";
@@ -17,8 +15,6 @@ import { IMenuItem } from "../utils/interface";
 
 const Menu = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const apiKey = useSelector((state: RootState) => state.apiKey.key);
-  const tenantId = useSelector((state: RootState) => state.tenant.id)
   const menu = useSelector((state: RootState) => state.menu.menu) || [];
   const menuStatus = useSelector((state: RootState) => state.menu.status);
 
@@ -27,19 +23,8 @@ const Menu = () => {
   const drinkItems = menu.filter((item) => item.type === "drink");
 
   useEffect(() => {
-    dispatch(fetchApiKey());
+      dispatch(fetchMenuThunk());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (apiKey) {
-      dispatch(fetchMenuThunk(apiKey));
-    }
-
-    if (!tenantId) {
-      dispatch(createNewTenant("LILLAMRY"))
-     
-    }
-  }, [apiKey, tenantId, dispatch]);
 
 
 

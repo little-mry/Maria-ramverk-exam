@@ -13,6 +13,9 @@ const Cart = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0)
 
+  
+
+
   return (
     <>
       <section
@@ -28,7 +31,7 @@ const Cart = () => {
           <article className={styles.cart__items}>
             <div className={styles.dottedline}></div>
             {cartItems.length > 0 ? (
-              cartItems.map((item) => <CartItem item={item} />)
+              cartItems.map((item) => <CartItem item={item} key={item.id}/>)
             ) : (
               <p className={styles.empty__msg}>Varukorgen är tom</p>
             )}

@@ -1,21 +1,20 @@
-import { createSlice } from "@reduxjs/toolkit";
-
-interface OrderState {
-    activeOrder: boolean;
-}
+import { OrderResponse, OrderState } from "../../utils/interface";
+import { submitOrder } from "../../utils/api";
+import { RootState } from "../store";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState: OrderState = {
-    activeOrder: true
+    order: [],
+    status: 'idle',
+    error: 'null',
 }
 
-const orderSlice = createSlice({
-    name: 'order',
-    initialState,
-    reducers: {
-        startOrder: (state) => { state.activeOrder = true},
-        completeOrder: (state) => { state.activeOrder = false}
+export const submitOrderThunk = createAsyncThunk<OrderResponse {state: RootState}>(
+    'order/submitOrder',
+    async () => {
+        try {
+            
+        }
     }
-})
+)
 
-export const { startOrder, completeOrder } = orderSlice.actions;
-export default orderSlice.reducer

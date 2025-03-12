@@ -11,13 +11,14 @@ const initialState: MenuState = {
 
 export const fetchMenuThunk = createAsyncThunk<
   IMenuItem[],
-  string,
+  void,
   { state: RootState }
 >("menu/fetchMenu", async (_, { getState, rejectWithValue }) => {
   try {
-    const apiKey = getState().apiKey.key;
-    if (!apiKey) throw new Error("API-nyckel saknas");
-    return await fetchMenu(apiKey);
+  
+   /*  const apiKey = getState().apiKey.key; */
+    /* if (!apiKey) throw new Error("API-nyckel saknas"); */
+    return await fetchMenu();
   } catch (error) {
     return rejectWithValue((error as Error).message);
   }
