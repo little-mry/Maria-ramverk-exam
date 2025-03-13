@@ -48,6 +48,7 @@
   flex-direction: column;
   justify-content: space-between;
   color: $color-black;
+  overflow-y: auto;
 
   &__items {
     display: flex;
