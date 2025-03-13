@@ -1,24 +1,27 @@
 import { configureStore } from "@reduxjs/toolkit";
-import activeOrderReducer from './slices/activeOrderSlice'
-import authReducer from './slices/authSlice'
-import tenantReducer from './slices/tenantSlice'
-import menuSliceReducer from "./slices/menuSlice";
-import cartReducer from "./slices/cartSlice";
-import orderReducer from './slices/orderSlice';
-import receiptReducer from './slices/receiptSlice'
+import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
+import storage from 'redux-persist/lib/storage';
+import rootReducer from './slices';
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['cart', 'order'],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-    reducer: {
-        apiKey: authReducer,
-        menu: menuSliceReducer,
-        cart: cartReducer,
-        tenant: tenantReducer,
-        order: orderReducer,
-        activeOrder: activeOrderReducer,
-        receipt: receiptReducer
-    }
-})
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
 
-export default store
+export default store;
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch; 
+export type AppDispatch = typeof store.dispatch;
+export const persistor = persistStore(store);
