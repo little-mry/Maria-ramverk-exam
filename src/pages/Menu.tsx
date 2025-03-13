@@ -12,29 +12,45 @@ import DrinkItems from "../components/DrinkItems";
 import styles from "../styles/pages/menu.module.scss";
 import { IMenuItem } from "../utils/interface";
 import { createNewTenant } from "../redux/slices/tenantSlice";
+import { fetchApiKey } from "../redux/slices/authSlice";
 
 
 const Menu = () => {
   const dispatch = useDispatch<AppDispatch>();
   const menu = useSelector((state: RootState) => state.menu.menu) || [];
   const menuStatus = useSelector((state: RootState) => state.menu.status);
-  const tenant = useSelector((state: RootState) => state.tenant);
+  const apiKey = useSelector((state: RootState) => state.apiKey.key);
+  const tenantId = useSelector((state: RootState) => state.tenant.id);
   
   const wontonItems = menu.filter((item) => item.type === "wonton");
   const dipItems = menu.filter((item) => item.type === "dip");
   const drinkItems = menu.filter((item) => item.type === "drink");
 
+
   useEffect(() => {
-    if (!tenant.id) {
-      dispatch(createNewTenant("LILLAMRY"))
-    }
-  }, [tenant.id, dispatch])
+    dispatch(fetchMenuThunk());
+
+}, [dispatch]); 
+
+  useEffect(() => {
+    const getTenant = async () => {
+      let currentTenantId = tenantId ?? localStorage.getItem("tenantId");
+      console.log('tenantid:', currentTenantId);
+   
+            
+      if (!currentTenantId && apiKey) {
+        try {
+          const result = await dispatch(createNewTenant("LILLAMRYS")).unwrap();
+          currentTenantId = result.id;
+    
+        } catch (error) {
+          console.error("Kunde inte hämta tenant:", error);
+        }
+      }
+    };
   
-  useEffect(() => {
-      dispatch(fetchMenuThunk());
-
-  }, [dispatch]);
-
+    getTenant();
+  }, [tenantId, apiKey, dispatch]);
 
 
   const handleAddToCart = (item: IMenuItem) => {

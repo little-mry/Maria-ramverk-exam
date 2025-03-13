@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { createTenant } from "../../utils/api";
 import { RootState } from "../store";
 import { TenantResponse, TenantState } from "../../utils/interface";
@@ -13,23 +13,17 @@ const initialState: TenantState = {
 export const createNewTenant = createAsyncThunk<
   TenantResponse,
   string,
-  { state: RootState }
+  { state: RootState } 
 >("tenant/createTenant", async (tenantName, { getState, rejectWithValue }) => {
   try {
     const apiKey = getState().apiKey.key;
     if (!apiKey) throw new Error("API-nyckel saknas");
 
-    const storedTenantId = localStorage.getItem("tenantId");
-    const storedTenantName = localStorage.getItem("tenantName");
-
-    if (storedTenantId && storedTenantName) {
-      return { id: storedTenantId, name: storedTenantName };
-    }
 
     const tenantResponse = await createTenant(apiKey, tenantName);
 
     localStorage.setItem("tenantId", tenantResponse.id as string);
-    localStorage.setItem("tenantName", tenantResponse.name || tenantName);
+
 
     return tenantResponse;
   } catch (error) {

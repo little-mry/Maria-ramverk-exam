@@ -5,7 +5,7 @@ import { AppDispatch, RootState } from "../redux/store";
 
 import cartIcon from "../assets/cart-icon.svg";
 import CartItem from "./CartItem";
-import { submitOrderThunk } from "../redux/slices/orderSlice";
+import { fetchOrderInfoThunk, submitOrderThunk } from "../redux/slices/orderSlice";
 import styles from '../styles/components/cart.module.scss'
 
 const Cart = () => {
@@ -25,11 +25,17 @@ const Cart = () => {
     return acc;
   }, []);
   
+  const handleSubmit = async () => {
+    const resultAction = await dispatch(submitOrderThunk(itemIds));
+    
+    if (submitOrderThunk.fulfilled.match(resultAction)) {
+      await dispatch(fetchOrderInfoThunk());
+      navigate("/eta");
+    } else {
+      console.error("Ordern misslyckades:", resultAction);
+    }
+  };
   
-  const handleSubmit = () => {   
-    dispatch(submitOrderThunk(itemIds))
-    navigate("/eta")
-  }
 
   return (
     <>

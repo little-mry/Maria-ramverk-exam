@@ -5,9 +5,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
 const initialState: OrderState = {
-  order: [],
+  order: [] ,
   status: "idle",
-  error: "null",
+  error: null,
 };
 
 export const submitOrderThunk = createAsyncThunk<
@@ -16,19 +16,23 @@ export const submitOrderThunk = createAsyncThunk<
   { state: RootState }
 >("order/submitOrder", async (orderItems, { rejectWithValue }) => {
   try {
-    return await submitOrder(orderItems);
+    const result = await submitOrder(orderItems);
+      return Array.isArray(result) ? result : [result];
   } catch (error) {
     return rejectWithValue((error as Error).message);
   }
 });
 
 export const fetchOrderInfoThunk = createAsyncThunk<
-OrderResponse, 
+OrderResponse[], 
 void, 
-{ state: RootState }
->('order/fetchOrderInfo', async (_, {rejectWithValue }) => {
+{ state: RootState; rejectValue: string }
+>(
+  'order/fetchOrderInfo', 
+  async (_, {rejectWithValue }) => {
   try {
-    return await fetchOrderInfo();
+    const data = await fetchOrderInfo();
+    return data
   } catch (error) {
     return rejectWithValue((error as Error).message)
   }
@@ -48,6 +52,17 @@ const orderSlice = createSlice({
         state.order = action.payload;
       })
       .addCase(submitOrderThunk.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = (action.payload as string) ?? "Något gick fel";
+      })
+      .addCase(fetchOrderInfoThunk.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchOrderInfoThunk.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.order = action.payload;
+      })
+      .addCase(fetchOrderInfoThunk.rejected, (state, action) => {
         state.status = "failed";
         state.error = (action.payload as string) ?? "Något gick fel";
       });

@@ -46,6 +46,7 @@ export interface OrderResponse {
   eta: string;
   timestamp: string;
   state: string;
+  id: string;
 }
 
 export interface OrderState extends Status {

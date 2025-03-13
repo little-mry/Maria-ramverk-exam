@@ -3,6 +3,8 @@ import { TenantResponse, IMenuItem } from "./interface";
 const baseUrl = "https://fdnzawlcf6.execute-api.eu-north-1.amazonaws.com";
 let apiKey: string | null;
 let tenantId: string | null;
+let orderId: string | null;
+
 
 //FETCH KEY
 export const fetchKey = async (): Promise<string> => {
@@ -18,7 +20,7 @@ export const createTenant = async (
   apiKey: string,
   tenant: string
 ): Promise<TenantResponse> => {
-  console.log(tenant);
+  
 
   const response = await fetch(`${baseUrl}/tenants`, {
     method: "POST",
@@ -26,12 +28,12 @@ export const createTenant = async (
       "Content-Type": "application/json",
       "x-zocom": `${apiKey}`,
     },
-    body: JSON.stringify({ name: `${tenant}` }),
+    body: JSON.stringify({ name: tenant }),
   });
 
   if (!response.ok) throw new Error("Kunde inte skapa tenant");
   const data = await response.json();
-  tenantId = data.id;
+  tenantId = data.id; 
 
   return data;
 };
@@ -40,7 +42,7 @@ export const createTenant = async (
 export const fetchMenu = async (): Promise<IMenuItem[]> => {
   apiKey = await fetchKey();
   if (!apiKey) throw new Error("API-nyckel saknas");
-
+  
   const response = await fetch(`${baseUrl}/menu`, {
     method: "GET",
     headers: {
@@ -48,7 +50,7 @@ export const fetchMenu = async (): Promise<IMenuItem[]> => {
       "x-zocom": `${apiKey}`,
     },
   });
-
+  
   if (!response.ok) throw new Error("Kunde inte hämta meny");
   const data = await response.json();
   return data.items;
@@ -68,9 +70,12 @@ export const submitOrder = async (orderItems: number[]): Promise<any> => {
   if (!response.ok) throw new Error("Kunde inte skicka order");
 
   const data = await response.json();
-  console.log("ordersvar:", data);
+  orderId = data.order.id
 
-  return data;
+  return {
+    order: data,
+    orderId: data.order.id
+  }
 };
 
 //FETCH ORDERINFO
@@ -86,13 +91,26 @@ export const fetchOrderInfo = async () => {
   if (!response.ok) throw new Error("Kunde inte hämta orderinfo");
 
   const data = await response.json();
-
-  return {
-    id: data.order.id, 
-    status: data.order.status,
-    items: data.order.items,
-    timestamp: data.order.timestamp,
-    eta: data.order.eta,
+  console.log('aktuell order data:', data);
+  
+  if (data.orders && Array.isArray(data.orders)) {
+    return data.orders.map((order: any) => ({
+      orderValue: order.orderValue,
+      eta: order.eta,
+      timestamp: order.timestamp,
+      state: order.state
+    }));
   }
+  else if (data.order) {
+    return [{
+      orderValue: data.order.orderValue,
+      eta: data.order.eta,
+      timestamp: data.order.timestamp,
+      state: data.order.state,
+      id: data.order.id,
+    }];
+  }
+  
+  return [];
 
 };
