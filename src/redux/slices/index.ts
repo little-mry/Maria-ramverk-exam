@@ -13,7 +13,6 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   tenant: tenantReducer,
   order: orderReducer,
-  activeOrder: activeOrderReducer,
   receipt: receiptReducer,
 });
 
