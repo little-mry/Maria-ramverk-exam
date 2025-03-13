@@ -6,6 +6,7 @@ import { AppDispatch, RootState } from "../redux/store";
 import cartIcon from "../assets/cart-icon.svg";
 import CartItem from "./CartItem";
 import { fetchOrderInfoThunk, submitOrderThunk } from "../redux/slices/orderSlice";
+import { clearCart } from "../redux/slices/cartSlice";
 import styles from '../styles/components/cart.module.scss'
 
 const Cart = () => {
@@ -17,7 +18,6 @@ const Cart = () => {
   const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0)
 
   
-  /* const itemIds = cartItems.map( item => item.id) */
   const itemIds = cartItems.reduce<number[]>((acc, item) => {
     for (let i = 0; i < item.quantity; i++) {
       acc.push(item.id);
@@ -29,11 +29,14 @@ const Cart = () => {
     const resultAction = await dispatch(submitOrderThunk(itemIds));
     
     if (submitOrderThunk.fulfilled.match(resultAction)) {
+      dispatch(clearCart());
       await dispatch(fetchOrderInfoThunk());
       navigate("/eta");
     } else {
       console.error("Ordern misslyckades:", resultAction);
     }
+
+
   };
   
 

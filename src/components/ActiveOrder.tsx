@@ -9,7 +9,7 @@ const ActiveOrder = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const hasActiveOrder = useSelector(
-    (state: RootState) => state.order.activeOrder
+    (state: RootState) => state.activeOrder
   );
   const [position, setPosition] = useState({
     x: window.innerWidth - 90,

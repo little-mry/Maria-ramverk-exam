@@ -1,7 +1,6 @@
 import { TenantResponse, IMenuItem } from "./interface";
 
 const baseUrl = "https://fdnzawlcf6.execute-api.eu-north-1.amazonaws.com";
-let apiKey: string | null;
 let tenantId: string | null;
 let orderId: string | null;
 
@@ -21,7 +20,6 @@ export const createTenant = async (
   tenant: string
 ): Promise<TenantResponse> => {
   
-
   const response = await fetch(`${baseUrl}/tenants`, {
     method: "POST",
     headers: {
@@ -40,7 +38,9 @@ export const createTenant = async (
 
 //FETCH MENU
 export const fetchMenu = async (): Promise<IMenuItem[]> => {
-  apiKey = await fetchKey();
+  const apiKey = await fetchKey();
+  console.log(apiKey);
+  
   if (!apiKey) throw new Error("API-nyckel saknas");
   
   const response = await fetch(`${baseUrl}/menu`, {
@@ -58,6 +58,7 @@ export const fetchMenu = async (): Promise<IMenuItem[]> => {
 
 //SUBMIT ORDER
 export const submitOrder = async (orderItems: number[]): Promise<any> => {
+  const apiKey = await fetchKey();
   const response = await fetch(`${baseUrl}/${tenantId}/orders`, {
     method: "POST",
     headers: {
@@ -80,6 +81,7 @@ export const submitOrder = async (orderItems: number[]): Promise<any> => {
 
 //FETCH ORDERINFO
 export const fetchOrderInfo = async () => {
+  const apiKey = await fetchKey();
   const response = await fetch(`${baseUrl}/${tenantId}/orders/${orderId}`, {
     method: "GET",
     headers: {
@@ -114,3 +116,20 @@ export const fetchOrderInfo = async () => {
   return [];
 
 };
+
+//FETCH RECEIPT
+export const createReceipt = async ( orderIdNew: string) => {
+  const apiKey = await fetchKey();
+  const response = await fetch(`${baseUrl}/receipts/${orderIdNew}`, {
+    method: 'GET',
+    headers: {
+      accept: "application/json",
+      "x-zocom": apiKey || "",
+    }
+    })
+  if (!response.ok) throw new Error("Kunde inte hämta kvitto");
+
+  const data = await response.json();
+
+  return data.receipt
+}

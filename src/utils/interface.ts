@@ -35,6 +35,7 @@ export interface ICartItem {
   name: string;
   price: number;
   quantity: number;
+  type: string;
 }
 
 export interface CartState {
@@ -52,3 +53,13 @@ export interface OrderResponse {
 export interface OrderState extends Status {
   order: OrderResponse[]
 }
+
+export interface ReceiptResponse {
+  id: string | null;
+  orderValue: number | null;
+  timestamp: string | null;
+  items: ICartItem[];
+  price: number | null;
+}
+
+export interface ReceiptState extends Status, ReceiptResponse {}

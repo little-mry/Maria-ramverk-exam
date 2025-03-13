@@ -12,8 +12,6 @@ import DrinkItems from "../components/DrinkItems";
 import styles from "../styles/pages/menu.module.scss";
 import { IMenuItem } from "../utils/interface";
 import { createNewTenant } from "../redux/slices/tenantSlice";
-import { fetchApiKey } from "../redux/slices/authSlice";
-
 
 const Menu = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,12 +34,12 @@ const Menu = () => {
     const getTenant = async () => {
       let currentTenantId = tenantId ?? localStorage.getItem("tenantId");
       console.log('tenantid:', currentTenantId);
-   
-            
+      
       if (!currentTenantId && apiKey) {
         try {
           const result = await dispatch(createNewTenant("LILLAMRYS")).unwrap();
           currentTenantId = result.id;
+        
     
         } catch (error) {
           console.error("Kunde inte hämta tenant:", error);

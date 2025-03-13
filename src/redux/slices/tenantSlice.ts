@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createTenant } from "../../utils/api";
 import { RootState } from "../store";
 import { TenantResponse, TenantState } from "../../utils/interface";
@@ -18,7 +18,6 @@ export const createNewTenant = createAsyncThunk<
   try {
     const apiKey = getState().apiKey.key;
     if (!apiKey) throw new Error("API-nyckel saknas");
-
 
     const tenantResponse = await createTenant(apiKey, tenantName);
 

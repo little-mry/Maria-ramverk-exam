@@ -4,7 +4,8 @@ import authReducer from './slices/authSlice'
 import tenantReducer from './slices/tenantSlice'
 import menuSliceReducer from "./slices/menuSlice";
 import cartReducer from "./slices/cartSlice";
-import orderReducer from './slices/orderSlice'
+import orderReducer from './slices/orderSlice';
+import receiptReducer from './slices/receiptSlice'
 
 const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
         tenant: tenantReducer,
         order: orderReducer,
         activeOrder: activeOrderReducer,
+        receipt: receiptReducer
     }
 })
 

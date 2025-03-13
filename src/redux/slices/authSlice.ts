@@ -8,7 +8,7 @@ const initialState: ApiKeyState = {
   error: null,
 };
 
-export const fetchApiKey = createAsyncThunk/* <string, void, { rejectValue: string }> */(
+export const fetchApiKey = createAsyncThunk(
   "auth/fetchApiKey",
   async (_, { rejectWithValue }) => {
     try {
@@ -30,16 +30,13 @@ const authSlice = createSlice({
         state.status = "loading";
         state.error = null;
       })
-      .addCase(
-        fetchApiKey.fulfilled,
-        (state, action) => {
-          state.status = "succeeded";
-          state.key = action.payload;
-        }
-      )
+      .addCase(fetchApiKey.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.key = action.payload;
+      })
       .addCase(fetchApiKey.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload as string ?? "Något gick fel";
+        state.error = (action.payload as string) ?? "Något gick fel";
       });
   },
 });
