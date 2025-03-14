@@ -1,5 +1,4 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import activeOrderReducer from './activeOrderSlice';
 import authReducer from './authSlice';
 import tenantReducer from './tenantSlice';
 import menuSliceReducer from './menuSlice';

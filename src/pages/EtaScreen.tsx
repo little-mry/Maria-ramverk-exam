@@ -4,7 +4,7 @@ import styles from "../styles/pages/etascreen.module.scss";
 import boxImg from "../assets/boxtop.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { fetchOrderInfoThunk, clearOrder } from "../redux/slices/orderSlice";
 
@@ -16,36 +16,54 @@ const EtaScreen = () => {
 
   const [minutesLeft, setMinutesLeft] = useState<number>(0);
 
+  const pollingIntervalRef = useRef<number | null>(null);
+
   useEffect(() => {
-    const interval = setInterval(() => {
-     dispatch(fetchOrderInfoThunk());
+    dispatch(fetchOrderInfoThunk());
+    pollingIntervalRef.current = window.setInterval(() => {
+      dispatch(fetchOrderInfoThunk());
     }, 5000);
 
-    return () => clearInterval(interval);
-  });
+    return () => {
+      if (pollingIntervalRef.current !== null) {
+        clearInterval(pollingIntervalRef.current);
+      }
+    };
+  }, [dispatch]);
 
   useEffect(() => {
-    if (orderINFO && orderINFO[0] && orderINFO[0].state === "completed") {
-      dispatch(clearOrder());
+    if (orderINFO.length === 0 && pollingIntervalRef.current !== null) {
+      clearInterval(pollingIntervalRef.current);
+      pollingIntervalRef.current = null;
     }
-  }, [orderINFO, dispatch]);
+  }, [orderINFO]);
 
   useEffect(() => {
-    if (!eta) return;
+    if (orderINFO.length === 0 && pollingIntervalRef.current) {
+      clearInterval(pollingIntervalRef.current);
+      pollingIntervalRef.current = null;
+    }
+  }, [orderINFO]);
+
+  useEffect(() => {
+    if (!eta || orderINFO.length === 0) return;
     const targetTime = new Date(eta).getTime();
 
     const updateCountdown = () => {
-      const now = new Date().getTime();
-      const difference = targetTime - now;
-      const minutes = difference > 0 ? Math.floor(difference / 60000) : 0;
-      setMinutesLeft(minutes);
+      const now = Date.now();
+      const diff = targetTime - now;
+      if (diff <= 0) {
+        setMinutesLeft(0);
+        dispatch(clearOrder());
+      } else {
+        setMinutesLeft(Math.floor(diff / 60000));
+      }
     };
 
     updateCountdown();
-    const intervalId = setInterval(updateCountdown, 1000);
-
-    return () => clearInterval(intervalId);
-  });
+    const countdownInterval = window.setInterval(updateCountdown, 1000);
+    return () => clearInterval(countdownInterval);
+  }, [eta, orderINFO, dispatch]);
 
   return (
     <>
@@ -67,7 +85,7 @@ const EtaScreen = () => {
             </>
           ) : (
             <>
-              <p className={styles.orderinfo__title}>Något gick fel...</p>
+              <p className={styles.orderinfo__title}>DINA WONTON ÄR KLARA</p>
               <p className={styles.orderinfo__eta}></p>
             </>
           )}

@@ -3,9 +3,8 @@ import { fetchOrderInfo, submitOrder } from "../../utils/api";
 import { RootState } from "../store";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-
 const initialState: OrderState = {
-  order: [] ,
+  order: [],
   status: "idle",
   error: null,
 };
@@ -17,24 +16,22 @@ export const submitOrderThunk = createAsyncThunk<
 >("order/submitOrder", async (orderItems, { rejectWithValue }) => {
   try {
     const result = await submitOrder(orderItems);
-      return Array.isArray(result) ? result : [result];
+    return Array.isArray(result) ? result : [result];
   } catch (error) {
     return rejectWithValue((error as Error).message);
   }
 });
 
 export const fetchOrderInfoThunk = createAsyncThunk<
-OrderResponse[], 
-void, 
-{ state: RootState; rejectValue: string }
->(
-  'order/fetchOrderInfo', 
-  async (_, {rejectWithValue }) => {
+  OrderResponse[],
+  void,
+  { state: RootState; rejectValue: string }
+>("order/fetchOrderInfo", async (_, { rejectWithValue }) => {
   try {
     const data = await fetchOrderInfo();
-    return data
+    return data;
   } catch (error) {
-    return rejectWithValue((error as Error).message)
+    return rejectWithValue((error as Error).message);
   }
 });
 
