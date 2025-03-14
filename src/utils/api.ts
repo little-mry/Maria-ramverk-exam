@@ -38,9 +38,7 @@ export const createTenant = async (
 
 //FETCH MENU
 export const fetchMenu = async (): Promise<IMenuItem[]> => {
-  const apiKey = await fetchKey();
-  console.log(apiKey);
-  
+  const apiKey = await fetchKey(); 
   if (!apiKey) throw new Error("API-nyckel saknas");
   
   const response = await fetch(`${baseUrl}/menu`, {

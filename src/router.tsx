@@ -10,8 +10,6 @@ export const router = createBrowserRouter(
             <Route index element={<Menu/>} />
             <Route path="/receipt" element={<Receipt />} />
             <Route path="/eta" element={<EtaScreen/>} />
-
-
         </Route>
     )
 )

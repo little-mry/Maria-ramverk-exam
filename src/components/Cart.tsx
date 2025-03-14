@@ -30,7 +30,7 @@ const Cart = () => {
     
     if (submitOrderThunk.fulfilled.match(resultAction)) {
       dispatch(clearCart());
-      await dispatch(fetchOrderInfoThunk());
+    /*   await dispatch(fetchOrderInfoThunk()); */
       navigate("/eta");
     } else {
       console.error("Ordern misslyckades:", resultAction);

@@ -43,11 +43,12 @@ export interface CartState {
 }
 
 export interface OrderResponse {
+  id: string;
+  items: ICartItem[]
   orderValue: number;
   eta: string;
   timestamp: string;
   state: string;
-  id: string;
 }
 
 export interface OrderState extends Status {
