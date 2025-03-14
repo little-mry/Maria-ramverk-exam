@@ -41,7 +41,11 @@ void,
 const orderSlice = createSlice({
   name: "order",
   initialState,
-  reducers: {},
+  reducers: {
+    clearOrder: (state) => {
+      state.order = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(submitOrderThunk.pending, (state) => {
@@ -70,3 +74,4 @@ const orderSlice = createSlice({
 });
 
 export default orderSlice.reducer;
+export const { clearOrder } = orderSlice.actions;
