@@ -17,12 +17,13 @@ interface Props {
 
 const CartItem = ({ item }: Props) => {
   const dispatch = useDispatch();
+  const totalPrice = item.price * item.quantity
 
   return (
     <section className={styles.cartitem}>
       <h2 className={styles.cartitem__title}>{item.name}</h2>
       <div className={styles.cartitem__dottedline}></div>
-      <h2 className={styles.cartitem__price}>{item.price} SEK</h2>
+      <h2 className={styles.cartitem__price}>{totalPrice} SEK</h2>
 
       <article className={styles.cartitem__amount__con}>
         <img
