@@ -5,7 +5,7 @@ import { AppDispatch, RootState } from "../redux/store";
 
 import cartIcon from "../assets/cart-icon.svg";
 import CartItem from "./CartItem";
-import { fetchOrderInfoThunk, submitOrderThunk } from "../redux/slices/orderSlice";
+import { submitOrderThunk } from "../redux/slices/orderSlice";
 import { clearCart } from "../redux/slices/cartSlice";
 import styles from '../styles/components/cart.module.scss'
 
